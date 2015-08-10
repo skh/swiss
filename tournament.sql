@@ -15,10 +15,13 @@ CREATE TABLE players (
 );
 
 CREATE TABLE matches (
-    playerA  integer REFERENCES players (id) NOT NULL,
-    playerB  integer REFERENCES players (id) NOT NULL,
-    winner   integer REFERENCES players (id) NULL,
-    PRIMARY KEY (playerA, playerB)
+    playerA  integer NOT NULL,
+    playerB  integer NOT NULL,
+    winner   integer NULL,
+    PRIMARY KEY (playerA, playerB),
+    FOREIGN KEY (playerA) REFERENCES players (id),
+    FOREIGN KEY (playerB) REFERENCES players (id),
+    FOREIGN KEY (winner) REFERENCES players (id)
 );
 
 CREATE VIEW player_standings AS
