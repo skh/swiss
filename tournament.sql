@@ -15,13 +15,11 @@ CREATE TABLE players (
 );
 
 CREATE TABLE matches (
-    playerA  integer NOT NULL,
-    playerB  integer NOT NULL,
-    winner   integer NULL,
-    PRIMARY KEY (playerA, playerB),
-    FOREIGN KEY (playerA) REFERENCES players (id),
-    FOREIGN KEY (playerB) REFERENCES players (id),
-    FOREIGN KEY (winner) REFERENCES players (id)
+    winner  integer NOT NULL,
+    loser  integer NOT NULL,
+    PRIMARY KEY (winner, loser),
+    FOREIGN KEY (winner) REFERENCES players (id),
+    FOREIGN KEY (loser) REFERENCES players (id)
 );
 
 CREATE VIEW player_standings AS
@@ -30,9 +28,11 @@ CREATE VIEW player_standings AS
            count(matches.winner) AS wins, 
               (SELECT count(*) 
                FROM matches 
-               WHERE players.id = matches.playera 
-               OR players.id = matches.playerb) 
+               WHERE players.id = matches.winner
+               OR players.id = matches.loser) 
            AS matches 
     FROM players 
     LEFT JOIN matches ON players.id = matches.winner 
     GROUP BY players.id;
+
+
